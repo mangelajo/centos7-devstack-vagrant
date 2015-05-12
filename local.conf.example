@@ -1,0 +1,56 @@
+[[local|localrc]]
+enable_service rabbit
+disable_service qpid
+
+#NOVA
+enable_service n-novnc
+
+#NEUTRON
+disable_service n-net
+enable_service q-dhcp
+enable_service q-svc
+enable_service q-agt
+enable_service q-l3
+enable_service q-meta
+enable_service q-lbaas
+enable_service q-vpnaas
+enable_service neutron
+Q_PLUGIN=ml2
+
+#HEAT
+disable_service h-eng
+disable_service h-api
+disable_service h-api-cfn
+disable_service h-api-cw
+
+#SWIFT
+disable_service swift
+
+curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
+    HOST_IP=$(curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4)
+HOST_IP_IFACE=eth0
+PUBLIC_INTERFACE=eth0
+VLAN_INTERFACE=eth0
+FLAT_INTERFACE=eth0
+
+#PASSWORDS
+MYSQL_PASSWORD=123456
+SERVICE_TOKEN=123456
+SERVICE_PASSWORD=123456
+ADMIN_PASSWORD=123456
+RABBIT_PASSWORD=123456
+
+#ETC...
+VOLUME_BACKING_FILE_SIZE=2048M
+API_RATE_LIMIT=False
+#VERBOSE=FALSE
+SCREEN_LOGDIR=$DEST/logs/screen
+DATA_DIR=/opt/data
+
+
+[[post-config|/$Q_PLUGIN_CONF_FILE]]
+
+[securitygroup]
+#firewall_driver=neutron.agent.linux.openvswitch_firewall.OVSFirewallDriver
+
+
