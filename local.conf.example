@@ -1,6 +1,7 @@
 [[local|localrc]]
 enable_service rabbit
-disable_service qpid
+# still not available in CentOS (as of 11/13/2015)
+disable_service zookeeper
 
 #NOVA
 enable_service n-novnc
@@ -16,6 +17,8 @@ enable_service q-lbaas
 enable_service q-vpnaas
 enable_service neutron
 Q_PLUGIN=ml2
+enable_plugin neutron git://git.openstack.org/openstack/neutron
+enable_service q-qos
 
 #HEAT
 disable_service h-eng
@@ -26,12 +29,12 @@ disable_service h-api-cw
 #SWIFT
 disable_service swift
 
-curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
+ping 169.254.169.254 -c 1 -W 1 && curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
     HOST_IP=$(curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4)
-HOST_IP_IFACE=eth0
-PUBLIC_INTERFACE=eth0
-VLAN_INTERFACE=eth0
-FLAT_INTERFACE=eth0
+#HOST_IP_IFACE=enp0s3
+#PUBLIC_INTERFACE=eth0
+#VLAN_INTERFACE=eth0
+#FLAT_INTERFACE=eth0
 
 #PASSWORDS
 MYSQL_PASSWORD=123456
