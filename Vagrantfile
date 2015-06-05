@@ -1,5 +1,8 @@
 require 'vagrant-openstack-provider'
 
+VM_MEMORY=6000
+VM_CPUS=4
+
 Vagrant.configure('2') do |config|
 
   config.vm.box       = 'stack'
@@ -31,6 +34,7 @@ Vagrant.configure('2') do |config|
 
         # personalize git, etc, anything you use for development
         [ -f /vagrant/personal_settings.sh ] && /vagrant/personal_settings.sh
+        source /etc/profile
 
         git clone https://git.openstack.org/openstack-dev/devstack
         cd devstack
@@ -45,9 +49,28 @@ Vagrant.configure('2') do |config|
         ./unstack.sh
         ./stack.sh
   EOF
-  #specific provider sections
+
+  #############################################################################
+  # specific provider sections                                                #
+  #############################################################################
+
+  config.vm.box       = 'chef/centos-7.0'
+  config.vm.provider :virtualbox do |v|
+    v.memory = VM_MEMORY
+    v.cpus = VM_CPUS
+  end
+
+  config.vm.provider "parallels" do |v, override|
+    override.vm.box = "parallels/centos-7.0"
+    v.memory = VM_MEMORY
+    v.cpus = VM_CPUS
+    override.vm.network "private_network", ip: "192.168.33.11",
+                                           dns: "8.8.8.8"
+    v.customize ["set", :id, "--nested-virt", "on"]
+  end
+
   config.vm.provider :openstack do |os, override|
-    os.server_name        = 'devstack'
+    os.server_name        = 'rdo-kilo'
     os.openstack_auth_url = "#{ENV['OS_AUTH_URL']}/tokens"
     os.username           = "#{ENV['OS_USERNAME']}"
     os.password           = "#{ENV['OS_PASSWORD']}"
@@ -61,16 +84,4 @@ sed -i 's/Defaults    requiretty/Defaults    !requiretty/g' /etc/sudoers
     EOF
     override.ssh.username = 'centos'
   end
-
-
-
-  config.vm.provider "parallels" do |v, override|
-    override.vm.box = "parallels/centos-7.0"
-    v.memory = 6000
-    v.cpus = 4
-    override.vm.network "private_network", ip: "192.168.33.11",
-                                           dns: "8.8.8.8"
-  end
-
-
 end

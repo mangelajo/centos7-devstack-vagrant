@@ -18,6 +18,10 @@ sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/fastestmirror.conf
 
 sudo yum install -y vim vim-enhanced ctags unzip python-flake8
 
+# colorify my prompt
+#cp /vagrant/bashrc_prompt ~/.bashrc_prompt
+#echo source ~/.bashrc_prompt >~/.bashrc
+
 # go vim go!,
 git clone https://github.com/mangelajo/vim-settings
 cd vim-settings
