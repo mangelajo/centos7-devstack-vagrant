@@ -12,7 +12,6 @@ Vagrant.configure('2') do |config|
   config.vm.provision :shell, :inline=> <<-EOF
         # install epel and juno binary stuff to be available to our devstack
         curl http://trunk.rdoproject.org/kilo/centos7/latest-RDO-kilo-CI/delorean-kilo.repo | sudo tee /etc/yum.repos.d/delorean-kilo.repo
-        sudo yum install -y https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
         sudo yum install -y deltarpm
         sudo yum install -y openvswitch MySQL-python git mariadb-devel \
                             git-review python-openvswitch
@@ -54,18 +53,18 @@ Vagrant.configure('2') do |config|
   # specific provider sections                                                #
   #############################################################################
 
-  config.vm.box       = 'chef/centos-7.0'
+  config.vm.box       = 'ajo/fedora22'
   config.vm.provider :virtualbox do |v|
     v.memory = VM_MEMORY
     v.cpus = VM_CPUS
   end
 
   config.vm.provider "parallels" do |v, override|
-    override.vm.box = "parallels/centos-7.0"
+    override.vm.box = "ajo/fedora22"
     v.memory = VM_MEMORY
     v.cpus = VM_CPUS
-    override.vm.network "private_network", ip: "192.168.33.11",
-                                           dns: "8.8.8.8"
+    # override.vm.network "private_network", ip: "192.168.33.11",
+    #                                       dns: "8.8.8.8"
     v.customize ["set", :id, "--nested-virt", "on"]
   end
 
@@ -76,12 +75,12 @@ Vagrant.configure('2') do |config|
     os.password           = "#{ENV['OS_PASSWORD']}"
     os.tenant_name        = "#{ENV['OS_TENANT_NAME']}"
     os.flavor             = ['oslab.4cpu.20hd.8gb', 'm1.large']
-    os.image              = ['centos7', 'centos-7-cloud']
+    os.image              = ['fedora22', 'fedora22-cloud', 'f22']
     os.floating_ip_pool   = ['external', 'external-compute01']
     os.user_data          = <<-EOF
 #!/bin/bash
 sed -i 's/Defaults    requiretty/Defaults    !requiretty/g' /etc/sudoers
     EOF
-    override.ssh.username = 'centos'
+    override.ssh.username = 'root'
   end
 end

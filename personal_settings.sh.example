@@ -1,12 +1,12 @@
 #!/bin/sh
 cd ~
 
-PROXY_URI=http://10.211.55.2:8080
+#PROXY_URI=http://10.211.55.2:8080
 
-echo export http_proxy=$PROXY_URI >>/etc/profile
-echo export https_proxy=$PROXY_URI >>/etc/profile
-echo export ftp_proxy=$PROXY_URI >>/etc/profile
-echo proxy=$PROXY_URI >>/etc/yum.conf
+#echo export http_proxy=$PROXY_URI >>/etc/profile
+#echo export https_proxy=$PROXY_URI >>/etc/profile
+#echo export ftp_proxy=$PROXY_URI >>/etc/profile
+#echo proxy=$PROXY_URI >>/etc/yum.conf
 
 # fix a mirror to make proxy caching help..
 sudo sed -i \

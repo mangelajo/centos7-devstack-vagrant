@@ -26,7 +26,7 @@ disable_service h-api-cw
 #SWIFT
 disable_service swift
 
-curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
+curl --connect-timeout 3 http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
     HOST_IP=$(curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4)
 HOST_IP_IFACE=eth0
 PUBLIC_INTERFACE=eth0
