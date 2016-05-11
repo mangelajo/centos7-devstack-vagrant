@@ -80,5 +80,6 @@ sed -i 's/Defaults    requiretty/Defaults    !requiretty/g' /etc/sudoers
 	libvirt.nested = true 
 	libvirt.cpus = VM_CPUS
         libvirt.memory = VM_MEMORY
+        libvirt.suspend_mode = 'managedsave'
    end
 end
