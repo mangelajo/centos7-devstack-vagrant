@@ -73,4 +73,12 @@ sed -i 's/Defaults    requiretty/Defaults    !requiretty/g' /etc/sudoers
     EOF
     override.ssh.username = 'centos'
   end
+
+   config.vm.provider :libvirt do |libvirt, config|
+	config.vm.box = "centos/7"
+	config.vm.synced_folder './', '/vagrant', type: 'rsync'
+	libvirt.nested = true 
+	libvirt.cpus = VM_CPUS
+        libvirt.memory = VM_MEMORY
+   end
 end

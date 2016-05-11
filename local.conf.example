@@ -13,8 +13,8 @@ enable_service q-svc
 enable_service q-agt
 enable_service q-l3
 enable_service q-meta
-enable_service q-lbaas
-enable_service q-vpnaas
+#enable_service q-lbaas
+#enable_service q-vpnaas
 enable_service neutron
 Q_PLUGIN=ml2
 enable_plugin neutron git://git.openstack.org/openstack/neutron
@@ -29,8 +29,8 @@ disable_service h-api-cw
 #SWIFT
 disable_service swift
 
-ping 169.254.169.254 -c 1 -W 1 && curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
-    HOST_IP=$(curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4)
+#ping 169.254.169.254 -c 1 -W 1 && curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
+#    HOST_IP=$(curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4)
 #HOST_IP_IFACE=enp0s3
 #PUBLIC_INTERFACE=eth0
 #VLAN_INTERFACE=eth0
