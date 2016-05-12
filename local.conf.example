@@ -17,7 +17,7 @@ enable_service q-meta
 #enable_service q-vpnaas
 enable_service neutron
 Q_PLUGIN=ml2
-enable_plugin neutron git://git.openstack.org/openstack/neutron
+enable_plugin neutron https://github.com/openstack/neutron
 enable_service q-qos
 
 #HEAT
@@ -29,8 +29,10 @@ disable_service h-api-cw
 #SWIFT
 disable_service swift
 
+#UNCOMMENT THIS TO AUTODISCOVER YOUR EXTERNAL IP WHEN DEPLOYING ON OPENSTACK PROVIDER
 #ping 169.254.169.254 -c 1 -W 1 && curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4 && \
 #    HOST_IP=$(curl http://169.254.169.254/2009-04-04/meta-data/public-ipv4)
+
 #HOST_IP_IFACE=enp0s3
 #PUBLIC_INTERFACE=eth0
 #VLAN_INTERFACE=eth0
@@ -50,10 +52,14 @@ API_RATE_LIMIT=False
 SCREEN_LOGDIR=$DEST/logs/screen
 DATA_DIR=/opt/data
 
+# faster to download
+GIT_BASE="https://github.com"
 
-#[[post-config|/$Q_PLUGIN_CONF_FILE]]
-#
-#[securitygroup]
-#firewall_driver=neutron.agent.linux.openvswitch_firewall.OVSFirewallDriver
+# Q_BUILD_OVS_FROM_GIT=True
+
+[[post-config|/$Q_PLUGIN_CONF_FILE]]
+
+[securitygroup]
+#firewall_driver=openvswitch
 
 

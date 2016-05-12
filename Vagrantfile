@@ -27,7 +27,7 @@ Vagrant.configure('2') do |config|
         [ -f /vagrant/personal_settings.sh ] && /vagrant/personal_settings.sh
         source /etc/profile
 
-        git clone https://git.openstack.org/openstack-dev/devstack
+        git clone https://github.com/openstack-dev/devstack
         cd devstack
 
         # link the personal config, otherwise the example one (in git)
