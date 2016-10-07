@@ -1,4 +1,6 @@
-require 'vagrant-openstack-provider'
+if "#{ENV['OS_AUTH_URL']}"!="" then
+	require 'vagrant-openstack-provider'
+end
 
 VM_MEMORY=6000
 VM_CPUS=4
@@ -58,21 +60,23 @@ Vagrant.configure('2') do |config|
     v.customize ["set", :id, "--nested-virt", "on"]
   end
 
-  config.vm.provider :openstack do |os, override|
-    os.server_name        = 'rdo-kilo'
-    os.openstack_auth_url = "#{ENV['OS_AUTH_URL']}/tokens"
-    os.username           = "#{ENV['OS_USERNAME']}"
-    os.password           = "#{ENV['OS_PASSWORD']}"
-    os.tenant_name        = "#{ENV['OS_TENANT_NAME']}"
-    os.flavor             = ['oslab.4cpu.20hd.8gb', 'm1.large']
-    os.image              = ['centos7', 'centos-7-cloud']
-    os.floating_ip_pool   = ['external', 'external-compute01']
-    os.user_data          = <<-EOF
-#!/bin/bash
-sed -i 's/Defaults    requiretty/Defaults    !requiretty/g' /etc/sudoers
-    EOF
-    override.ssh.username = 'centos'
-  end
+  if "#{ENV['OS_AUTH_URL']}"!="" then
+	  config.vm.provider :openstack do |os, override|
+	    os.server_name        = 'rdo-kilo'
+	    os.openstack_auth_url = "#{ENV['OS_AUTH_URL']}/tokens"
+	    os.username           = "#{ENV['OS_USERNAME']}"
+	    os.password           = "#{ENV['OS_PASSWORD']}"
+	    os.tenant_name        = "#{ENV['OS_TENANT_NAME']}"
+	    os.flavor             = ['oslab.4cpu.20hd.8gb', 'm1.large']
+	    os.image              = ['centos7', 'centos-7-cloud']
+	    os.floating_ip_pool   = ['external', 'external-compute01']
+	    os.user_data          = <<-EOF
+	#!/bin/bash
+	sed -i 's/Defaults    requiretty/Defaults    !requiretty/g' /etc/sudoers
+	    EOF
+	    override.ssh.username = 'centos'
+	  end
+   end
 
    config.vm.provider :libvirt do |libvirt, config|
 	config.vm.box = "centos/7"
