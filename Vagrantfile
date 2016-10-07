@@ -2,8 +2,8 @@ if "#{ENV['OS_AUTH_URL']}"!="" then
 	require 'vagrant-openstack-provider'
 end
 
-VM_MEMORY=6000
-VM_CPUS=4
+VM_MEMORY=ENV['VM_MEMORY'] || "6000"
+VM_CPUS=ENV['VM_CPUS'] || "4"
 
 Vagrant.configure('2') do |config|
 
