@@ -9,6 +9,9 @@ Vagrant.configure('2') do |config|
 
   config.vm.box       = 'stack'
   config.vm.hostname  = 'devstack'
+  if ENV.has_key? 'SSH_FWD_PORT' then
+    config.vm.network "forwarded_port", guest: 22, host: ENV['SSH_FWD_PORT'].to_i 
+  end
   config.ssh.forward_agent = true
 
   config.vm.provision :shell, :privileged=>true, :inline=> <<-EOF
